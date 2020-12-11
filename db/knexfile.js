@@ -8,6 +8,7 @@ module.exports = {
     user: config.db.user,
     password: config.db.password,
     database: config.db.database,
+    multipleStatements: true,
   },
   migrations: {
     tableName: 'knex_migrations',
