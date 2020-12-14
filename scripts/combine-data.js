@@ -48,6 +48,7 @@ fs.createReadStream(path.join(__dirname, './TableSPECIES+.csv'))
           wikiObj.item.lastIndexOf('/') + 1,
         );
         row.image_url = wikiObj.image ?? '';
+        row.common_name = wikiObj.common_name ?? '';
       }
 
       rows.push(row);
@@ -68,7 +69,7 @@ fs.createReadStream(path.join(__dirname, './TableSPECIES+.csv'))
       });
 
     await writeAsync(
-      'Id;Kingdom;Phylum;Class;Order;Family;Genus;Species;Subspecies;Scientific Name;Author;Rank;Listing;CITES;Party;Listed under;Full note;# Full note;All_DistributionFullNames;All_DistributionISOCodes;NativeDistributionFullNames;Introduced_Distribution;Introduced(?)_Distribution;Reintroduced_Distribution;Extinct_Distribution;Extinct(?)_Distribution;Distribution_Uncertain;wikidata_id;image_url\n',
+      'Id;Kingdom;Phylum;Class;Order;Family;Genus;Species;Subspecies;Scientific Name;Author;Rank;Listing;CITES;Party;Listed under;Full note;# Full note;All_DistributionFullNames;All_DistributionISOCodes;NativeDistributionFullNames;Introduced_Distribution;Introduced(?)_Distribution;Reintroduced_Distribution;Extinct_Distribution;Extinct(?)_Distribution;Distribution_Uncertain;wikidata_id;image_url;common_name\n',
     );
 
     for (const row of processedRows) {
@@ -129,6 +130,8 @@ fs.createReadStream(path.join(__dirname, './TableSPECIES+.csv'))
       await writeAsync(serializeCSV(row.wikidata_id ?? ''));
       await writeAsync(';');
       await writeAsync(serializeCSV(row.image_url ?? ''));
+      await writeAsync(';');
+      await writeAsync(serializeCSV(row.common_name ?? ''));
       await writeAsync('\n');
     }
 
