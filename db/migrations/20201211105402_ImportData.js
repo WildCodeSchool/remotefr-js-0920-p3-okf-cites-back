@@ -3,6 +3,11 @@ const zlib = require('zlib');
 const path = require('path');
 
 exports.up = async function up(knex) {
+  // eslint-disable-next-line no-console
+  console.warn(
+    "You might need to increase 'max_allowed_packet' in mysql's config for this migration to work.",
+  );
+
   const gzipSql = fs.readFileSync(
     path.join(__dirname, '../insert-data.sql.gz'),
   );
