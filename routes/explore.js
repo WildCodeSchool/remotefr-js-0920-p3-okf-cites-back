@@ -9,7 +9,7 @@ router.get('/search', async (req, res) => {
   const result = await knex('species')
     .select('*')
     .where('name', 'like', `%${movieSearch}%`)
-    .orWhere('name', 'like', `%${movieSearch}%`)
+    .orWhere('common_name', 'like', `%${movieSearch}%`)
     .limit(20);
   res.json(result);
 });
