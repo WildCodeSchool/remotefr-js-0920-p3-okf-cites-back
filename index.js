@@ -4,7 +4,7 @@ const compression = require('compression');
 const morgan = require('morgan');
 const { port } = require('./config');
 
-const explorerRouter = require('./routes/explore.js');
+const speciesRouter = require('./routes/species.js');
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(cors());
 app.use(compression());
 app.use(morgan('dev'));
 
-app.use('/explore', explorerRouter);
+app.use('/species', speciesRouter);
 
 app.listen(port, (err) => {
   if (err) {
