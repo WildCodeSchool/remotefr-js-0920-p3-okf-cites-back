@@ -39,7 +39,22 @@ router.get('/search', async (req, res) => {
   const getTotalSpeciesCount = async () =>
     (await knex('species').count('*', { as: 'count' }).first()).count;
 
-  const getAnimalClassCount = async () => {
+  const getByKingdomCount = async () => {
+    const rows = await nameQb
+      .clone()
+      .select('kingdom')
+      .count('*', { as: 'count' })
+      .whereNotNull('kingdom')
+      .groupBy('kingdom');
+
+    return rows.reduce((obj, row) => {
+      // eslint-disable-next-line no-param-reassign
+      obj[row.kingdom.toLowerCase()] = row.count;
+      return obj;
+    }, {});
+  };
+
+  const getByClassCount = async () => {
     const rows = await nameQb
       .clone()
       .select('class')
@@ -53,15 +68,6 @@ router.get('/search', async (req, res) => {
       return obj;
     }, {});
   };
-
-  const getPlantCount = async () =>
-    (
-      await nameQb
-        .clone()
-        .count('*', { as: 'count' })
-        .where('kingdom', '=', 'Plantae')
-        .first()
-    ).count;
 
   const getCitesCount = async () => {
     const rows = await nameQb
@@ -87,14 +93,14 @@ router.get('/search', async (req, res) => {
   const [
     species,
     totalCount,
-    animalClassCount,
-    plantCount,
+    kingdomCount,
+    classCount,
     citesCount,
   ] = await Promise.all([
     speciesQb,
     getTotalSpeciesCount(),
-    getAnimalClassCount(),
-    getPlantCount(),
+    getByKingdomCount(),
+    getByClassCount(),
     getCitesCount(),
   ]);
 
@@ -102,8 +108,8 @@ router.get('/search', async (req, res) => {
     species,
     counts: {
       total: totalCount,
-      animalClass: animalClassCount,
-      plant: plantCount,
+      class: classCount,
+      kingdom: kingdomCount,
       cites: citesCount,
     },
   });
