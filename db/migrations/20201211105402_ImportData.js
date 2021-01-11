@@ -1,5 +1,4 @@
 const fs = require('fs');
-const zlib = require('zlib');
 const path = require('path');
 
 exports.up = async function up(knex) {
@@ -8,11 +7,9 @@ exports.up = async function up(knex) {
     "You might need to increase 'max_allowed_packet' in mysql's config for this migration to work.",
   );
 
-  const gzipSql = fs.readFileSync(
-    path.join(__dirname, '../insert-data.sql.gz'),
+  await knex.raw(
+    fs.readFileSync(path.join(__dirname, '../insert-data.sql')).toString(),
   );
-  const sql = zlib.gunzipSync(gzipSql).toString();
-  await knex.raw(sql);
 };
 
 exports.down = async function down(knex) {
