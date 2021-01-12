@@ -115,4 +115,35 @@ router.get('/search', async (req, res) => {
   });
 });
 
+router.get('/:id', async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+
+  const speciesQb = knex('species').where('id', '=', id).first();
+
+  const getCountriesByType = async () => {
+    const countries = await knex({ sc: 'species_country' })
+      .join({ c: 'country' }, 'sc.country_id', '=', 'c.id')
+      .where('sc.species_id', '=', id)
+      .select(['c.name', 'c.iso_code', 'sc.uncertain', 'sc.type']);
+
+    return countries.reduce((obj, country) => {
+      // Push to existing or new array
+      // eslint-disable-next-line no-param-reassign
+      (obj[country.type] = obj[country.type] ?? []).push({
+        name: country.name,
+        iso_code: country.iso_code,
+        uncertain: country.uncertain === 1,
+      });
+      return obj;
+    }, {});
+  };
+
+  const [species, countries] = await Promise.all([
+    speciesQb,
+    getCountriesByType(),
+  ]);
+
+  res.json({ ...species, countries });
+});
+
 module.exports = router;
