@@ -14,11 +14,17 @@ module.exports.up = async function up(knex) {
         'name',
         "VARCHAR(510) AS (CONCAT(genus, ' ', species))",
       );
-      table.string('common_name');
+      table.specificType(
+        'common_name',
+        'VARCHAR(255) AS (COALESCE(common_name_fr, common_name_en))',
+      );
+      table.string('common_name_fr');
+      table.string('common_name_en');
       table.string('author');
       table.string('listing');
       table.enum('cites', ['I', 'II', 'I/II', 'III']);
       table.string('wikidata_id');
+      table.string('wikipedia_url', 2000);
       table.string('image_url', 2000);
     })
     .createTable('country', (table) => {
