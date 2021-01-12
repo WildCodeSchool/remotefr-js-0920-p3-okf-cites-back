@@ -1,9 +1,19 @@
 const express = require('express');
+const cors = require('cors');
+const compression = require('compression');
+const morgan = require('morgan');
 const { port } = require('./config');
+
+const speciesRouter = require('./routes/species.js');
 
 const app = express();
 
-app.get('/', (req, res) => res.send('Express server is up and running!'));
+app.use(express.json());
+app.use(cors());
+app.use(compression());
+app.use(morgan('dev'));
+
+app.use('/species', speciesRouter);
 
 app.listen(port, (err) => {
   if (err) {

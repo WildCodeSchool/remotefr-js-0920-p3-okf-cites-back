@@ -102,6 +102,7 @@ fs.createReadStream(path.join(__dirname, './output-data.csv'))
         // Distribution_Uncertain
         // wikidata_id
         // image_url
+        // common_name
 
         console.log('Importing species');
         async function insertSpecies(species) {
@@ -119,6 +120,7 @@ fs.createReadStream(path.join(__dirname, './output-data.csv'))
             cites: species.CITES,
             wikidata_id: species.wikidata_id,
             image_url: species.image_url,
+            common_name: species.common_name,
           };
           for (const [key, val] of Object.entries(insertData)) {
             if (val === '') insertData[key] = null;
@@ -212,11 +214,10 @@ fs.createReadStream(path.join(__dirname, './output-data.csv'))
         }
 
         while (csvSpecies.length) {
-          // 100 at at time
-          await Promise.all(csvSpecies.splice(0, 100).map(insertSpecies));
+          // 500 at at time
+          await Promise.all(csvSpecies.splice(0, 500).map(insertSpecies));
         }
 
-        // await Promise.all(csvSpecies.map(insertSpecies));
         console.log('Importing species done');
       });
   });
