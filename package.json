@@ -25,6 +25,7 @@
     "mysql2": "^2.2.5"
   },
   "devDependencies": {
+    "axios": "^0.21.1",
     "csv-parser": "^3.0.0",
     "eslint": "^7.15.0",
     "eslint-config-airbnb-base": "^14.2.1",
