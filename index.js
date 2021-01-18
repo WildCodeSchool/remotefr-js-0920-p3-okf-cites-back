@@ -13,7 +13,7 @@ app.use(cors());
 app.use(compression());
 app.use(morgan('dev'));
 
-app.use('/species', speciesRouter);
+app.use('/api/species', speciesRouter);
 
 app.listen(port, (err) => {
   if (err) {

@@ -4,8 +4,31 @@ const knex = require('../db/knex');
 const router = express.Router();
 
 router.get('/search', async (req, res) => {
-  const { query, cites, animal } = req.query;
-  const plant = req.query.plant === 'true';
+  const {
+    query = '',
+    kingdom = ['Animalia', 'Plantae'],
+    class: class_ = [
+      'Actinopteri',
+      'Amphibia',
+      'Anthozoa',
+      'Arachnida',
+      'Aves',
+      'Bivalvia',
+      'Coelacanthi',
+      'Dipneusti',
+      'Elasmobranchii',
+      'Gastropoda',
+      'Hirudinoidea',
+      'Holothuroidea',
+      'Hydrozoa',
+      'Insecta',
+      'Mammalia',
+      'Reptilia',
+    ],
+    cites = ['I', 'II', 'III', 'I/II', '?'],
+    limit = 20,
+    offset = 0,
+  } = req.query;
 
   // Where by name and common_name
   const nameQb = knex('species').where((builder) =>
@@ -18,22 +41,32 @@ router.get('/search', async (req, res) => {
   const speciesQb = nameQb
     .clone()
     .select('*')
-    .limit(20)
+    .limit(limit)
+    .offset(offset)
     .where((builder) => {
-      if (animal?.length > 0) {
-        builder.whereIn('class', animal);
+      if (kingdom.includes('Animalia')) {
+        if (class_?.length > 0) {
+          // Animalia of class
+          builder.whereIn('class', class_);
+        } else {
+          // All Animalia
+          builder.where('kingdom', '=', 'Animalia');
+        }
       }
 
-      if (plant) {
+      if (kingdom.includes('Plantae')) {
         builder.orWhere('kingdom', '=', 'Plantae');
       }
     });
 
   if (cites?.length > 0) {
-    // Add I/II to where if it contains I or II
-    if (cites.some((c) => c === 'I' || c === 'II')) cites.push('I/II');
+    speciesQb.where((builder) => {
+      builder.whereIn('cites', cites);
 
-    speciesQb.whereIn('cites', cites);
+      if (cites.includes('?')) {
+        builder.orWhereNull('cites');
+      }
+    });
   }
 
   const getTotalSpeciesCount = async () =>
@@ -74,20 +107,13 @@ router.get('/search', async (req, res) => {
       .clone()
       .select('cites')
       .count('*', { as: 'count' })
-      .whereNotNull('cites')
       .groupBy('cites');
 
-    const countObj = rows.reduce((obj, row) => {
+    return rows.reduce((obj, row) => {
       // eslint-disable-next-line no-param-reassign
       obj[row.cites] = row.count;
       return obj;
     }, {});
-
-    return {
-      I: countObj.I + countObj['I/II'],
-      II: countObj.II + countObj['I/II'],
-      III: countObj.III,
-    };
   };
 
   const [
