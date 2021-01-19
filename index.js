@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const { port } = require('./config');
 
 const speciesRouter = require('./routes/species.js');
+const dumpRouter = require('./routes/dump.js');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(compression());
 app.use(morgan('dev'));
 
 app.use('/api/species', speciesRouter);
+app.use('/api/dump', dumpRouter);
 
 app.listen(port, (err) => {
   if (err) {
