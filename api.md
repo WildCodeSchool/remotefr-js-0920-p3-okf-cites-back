@@ -22,11 +22,19 @@
 | wikipedia_url  | Url de l'article wikipedia français de l'espèce.                                                                                                                                                               | `string \| null` |                                                                                                                                                                                                                            |
 | image_url      | Url d'une image wikimedia de l'espèce.                                                                                                                                                                         | `string \| null` |                                                                                                                                                                                                                            |
 
+## Country
+
+| Nom       | Description                                                                                   | Type      |
+| --------- | --------------------------------------------------------------------------------------------- | --------- |
+| name      | Nom du pays.                                                                                  | `string`  |
+| iso_code  | Code 2 lettre [ISO 3166-1 alpha-2](https://fr.wikipedia.org/wiki/ISO_3166-1_alpha-2) du pays. | `string`  |
+| uncertain | Incertidute de l'information. Si `true`, l'information peut-être incorrecte.                  | `boolean` |
+
 # API
 
 ## Recherche espèces
 
-`/api/species/search`
+GET `/api/species/search`
 
 #### Paramètres de requête
 
@@ -43,16 +51,16 @@
 
 | Nom                        | Description                                                                                 | Type                               |
 | -------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------- |
-| species                    | Espèces correspondants aux critères de recherche.                                           | `Array<Species>`                   |
+| species                    | Espèces correspondants aux critères de recherche. Voir [la structure Species](#species).    | `Array<Species>`                   |
 | counts                     | Comptes de la base de données.                                                              | `Object<number \| Object<number>>` |
 | &nbsp;&nbsp;counts.total   | Nombre d'espèces total dans la base de données. **Ignore les critères de recherche.**       | `number`                           |
 | &nbsp;&nbsp;counts.kingdom | Nombre d'espèces pour chaque règnes. **Ne prend en compte que le critère `query`.**         | `Object<number>`                   |
 | &nbsp;&nbsp;counts.class   | Nombre d'espèces pour chaque classes. **Ne prend en compte que le critère `query`.**        | `Object<number>`                   |
 | &nbsp;&nbsp;counts.cites   | Nombre d'espèces pour chaque annexes CITES . **Ne prend en compte que le critère `query`.** | `Object<number>`                   |
 
-#### Example
+#### Exemple
 
-`/api/species/search?query=elephant&limit=2`
+GET `/api/species/search?query=elephant&limit=2`
 
 ```json
 {
@@ -115,6 +123,198 @@
       "I": 1,
       "II": 10
     }
+  }
+}
+```
+
+## Informations d'une espèce
+
+GET `/api/species/:id`
+
+#### Paramètres de requête
+
+| Nom | Description     | Type     |
+| --- | --------------- | -------- |
+| :id | Id de l'espèce. | `number` |
+
+#### Réponse
+
+| Nom                                | Description                                                                                      | Type                     |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------ |
+| ...Species                         | Informations de l'espèce. Voir [la structure Species](#species).                                 | `Species`                |
+| countries                          | Comptes de la base de données. Voir [la structure Country](#country).                            | `Object<Array<Country>>` |
+| &nbsp;&nbsp;countries.native       | Pays où l'espèce est natif. **Cette propriété est parfois absente.**                             | `Array<Country>`         |
+| &nbsp;&nbsp;countries.introduced   | Pays où l'espèce a été introduite. **Cette propriété est parfois absente.**                      | `Array<Country>`         |
+| &nbsp;&nbsp;countries.reintroduced | Pays où l'espèce a été réintroduite. **Cette propriété est parfois absente.**                    | `Array<Country>`         |
+| &nbsp;&nbsp;countries.extinct      | Pays où l'espèce est devenu éteint. **Cette propriété est parfois absente.**                     | `Array<Country>`         |
+| &nbsp;&nbsp;countries.uncertain    | Pays où l'espèce dont l'état de l'espèce est incertain. **Cette propriété est parfois absente.** | `Array<Country>`         |
+
+#### Exemple
+
+GET `/api/species/5601`
+
+```json
+{
+  "id": 5601,
+  "kingdom": "Animalia",
+  "phylum": "Mollusca",
+  "class": "Bivalvia",
+  "order": "Veneroida",
+  "family": "Tridacnidae",
+  "genus": "Tridacna",
+  "species": "derasa",
+  "subspecies": null,
+  "name": "Tridacna derasa",
+  "common_name": "Southern Giant Clam",
+  "common_name_fr": null,
+  "common_name_en": "Southern Giant Clam",
+  "author": "(R��ding, 1798)",
+  "listing": "B",
+  "cites": "II",
+  "wikidata_id": "Q1055977",
+  "wikipedia_url": "https://fr.wikipedia.org/wiki/Tridacna_derasa",
+  "image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Tridacna%20derasa%201.jpg",
+  "countries": {
+    "native": [
+      {
+        "name": "Australia",
+        "iso_code": "AU",
+        "uncertain": false
+      },
+      {
+        "name": "Cocos (Keeling) Islands",
+        "iso_code": "CC",
+        "uncertain": false
+      },
+      {
+        "name": "Fiji",
+        "iso_code": "FJ",
+        "uncertain": false
+      },
+      {
+        "name": "Indonesia",
+        "iso_code": "ID",
+        "uncertain": false
+      },
+      {
+        "name": "Malaysia",
+        "iso_code": "MY",
+        "uncertain": false
+      },
+      {
+        "name": "New Caledonia",
+        "iso_code": "NC",
+        "uncertain": false
+      },
+      {
+        "name": "Palau",
+        "iso_code": "PW",
+        "uncertain": false
+      },
+      {
+        "name": "Papua New Guinea",
+        "iso_code": "PG",
+        "uncertain": false
+      },
+      {
+        "name": "Philippines",
+        "iso_code": "PH",
+        "uncertain": false
+      },
+      {
+        "name": "Solomon Islands",
+        "iso_code": "SB",
+        "uncertain": false
+      },
+      {
+        "name": "Tonga",
+        "iso_code": "TO",
+        "uncertain": false
+      },
+      {
+        "name": "Viet Nam",
+        "iso_code": "VN",
+        "uncertain": false
+      }
+    ],
+    "introduced": [
+      {
+        "name": "American Samoa",
+        "iso_code": "AS",
+        "uncertain": false
+      },
+      {
+        "name": "Cook Islands",
+        "iso_code": "CK",
+        "uncertain": false
+      },
+      {
+        "name": "Micronesia (Federated States of)",
+        "iso_code": "FM",
+        "uncertain": false
+      },
+      {
+        "name": "Samoa",
+        "iso_code": "WS",
+        "uncertain": false
+      },
+      {
+        "name": "Marshall Islands",
+        "iso_code": "MH",
+        "uncertain": true
+      },
+      {
+        "name": "Tuvalu",
+        "iso_code": "TV",
+        "uncertain": true
+      },
+      {
+        "name": "United States of America",
+        "iso_code": "US",
+        "uncertain": true
+      }
+    ],
+    "reintroduced": [
+      {
+        "name": "Guam",
+        "iso_code": "GU",
+        "uncertain": false
+      },
+      {
+        "name": "Northern Mariana Islands",
+        "iso_code": "MP",
+        "uncertain": false
+      }
+    ],
+    "extinct": [
+      {
+        "name": "Guam",
+        "iso_code": "GU",
+        "uncertain": false
+      },
+      {
+        "name": "Northern Mariana Islands",
+        "iso_code": "MP",
+        "uncertain": false
+      },
+      {
+        "name": "Vanuatu",
+        "iso_code": "VU",
+        "uncertain": false
+      }
+    ],
+    "uncertain": [
+      {
+        "name": "Tuvalu",
+        "iso_code": "TV",
+        "uncertain": false
+      },
+      {
+        "name": "United States of America",
+        "iso_code": "US",
+        "uncertain": false
+      }
+    ]
   }
 }
 ```
