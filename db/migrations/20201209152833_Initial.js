@@ -22,7 +22,7 @@ module.exports.up = async function up(knex) {
       table.string('common_name_en');
       table.string('author');
       table.string('listing');
-      table.enum('cites', ['I', 'II', 'I/II', 'III']);
+      table.enum('cites', ['I', 'II', 'I/II', 'III', '?']);
       table.string('wikidata_id');
       table.string('wikipedia_url', 2000);
       table.string('image_url', 2000);
