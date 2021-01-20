@@ -32,6 +32,8 @@
 
 # API
 
+Les routes sont limitées à **30 requêtes par minutes**. Au delà, le serveur renverra une erreur 429.
+
 ## Recherche espèces
 
 GET `/api/species/search`
@@ -318,3 +320,10 @@ GET `/api/species/5601`
   }
 }
 ```
+
+## Dump de la base de données
+
+GET `/api/species/dump`
+
+Renvoie un fichier sql généré avec [mysqldump](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html).  
+Cette route est limité à **1 requête par minutes.**
