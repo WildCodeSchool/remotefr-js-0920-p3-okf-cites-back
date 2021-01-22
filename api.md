@@ -34,6 +34,78 @@
 
 Les routes sont limitées à **30 requêtes par minutes**. Au delà, le serveur renverra une erreur 429.
 
+## Toute les espèces
+
+GET `/api/species/`
+
+#### Paramètres de requête
+
+| Nom    | Description                                                                           | Type     | Valeur par défaut |
+| ------ | ------------------------------------------------------------------------------------- | -------- | ----------------- |
+| limit  | Limite le nombre maximum d'espèces retournées.                                        | `number` | 20                |
+| offset | Décalage des résultats. Utilisez avec `limit` pour un faire un système de pagination. | `number` | 0                 |
+
+#### Réponse
+
+| Nom     | Description                                     | Type             |
+| ------- | ----------------------------------------------- | ---------------- |
+| species | Voir [la structure Species](#species).          | `Array<Species>` |
+| total   | Nombre total d'espèces dans la base de données. | `number`         |
+
+#### Exemple
+
+GET `/api/species/?limit=2&offset=5`
+
+```json
+{
+  "species": [
+    {
+      "id": 6,
+      "kingdom": "Animalia",
+      "phylum": "Chordata",
+      "class": "Aves",
+      "order": "Coraciiformes",
+      "family": "Bucerotidae",
+      "genus": "Anthracoceros",
+      "species": "marchei",
+      "subspecies": null,
+      "name": "Anthracoceros marchei",
+      "common_name": "Calao de Palawan",
+      "common_name_fr": "Calao de Palawan",
+      "common_name_en": "Palawan Hornbill",
+      "author": "Oustalet, 1885",
+      "listing": "B",
+      "cites": "II",
+      "wikidata_id": "Q1193501",
+      "wikipedia_url": "https://fr.wikipedia.org/wiki/Calao_de_Palawan",
+      "image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Anthracoceros%20marchei%20-Palawan-8.jpg"
+    },
+    {
+      "id": 7,
+      "kingdom": "Animalia",
+      "phylum": "Chordata",
+      "class": "Aves",
+      "order": "Psittaciformes",
+      "family": "Psittacidae",
+      "genus": "Pyrrhura",
+      "species": "albipectus",
+      "subspecies": null,
+      "name": "Pyrrhura albipectus",
+      "common_name": "Conure à col blanc",
+      "common_name_fr": "Conure à col blanc",
+      "common_name_en": "White-necked Parakeet",
+      "author": "Chapman, 1914",
+      "listing": "B",
+      "cites": "II",
+      "wikidata_id": "Q254919",
+      "wikipedia_url": "https://fr.wikipedia.org/wiki/Conure_%C3%A0_col_blanc",
+      "image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/White-breasted%20Parakeets%20%28Pyrrhua%20albipectus%29.jpg"
+    }
+  ],
+  "total": 21229
+}
+```
+
 ## Recherche espèces
 
 GET `/api/species/search`

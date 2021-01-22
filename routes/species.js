@@ -3,6 +3,17 @@ const knex = require('../db/knex');
 
 const router = express.Router();
 
+router.get('/', async (req, res) => {
+  const { limit = 20, offset = 0 } = req.query;
+
+  const speciesQb = knex('species').limit(limit).offset(offset);
+  const speciesCountQb = knex('species').count('*', { as: 'count' }).first();
+
+  const [species, { count }] = await Promise.all([speciesQb, speciesCountQb]);
+
+  return res.json({ species, total: count });
+});
+
 router.get('/search', async (req, res) => {
   const {
     query = '',
