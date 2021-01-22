@@ -106,6 +106,71 @@ GET `/api/species/?limit=2&offset=5`
 }
 ```
 
+## Espèces aléatoire avec données manquantes
+
+GET `/api/species/missing-data`
+
+#### Paramètres de requête
+
+| Nom   | Description                                    | Type     | Valeur par défaut |
+| ----- | ---------------------------------------------- | -------- | ----------------- |
+| limit | Limite le nombre maximum d'espèces retournées. | `number` | 20                |
+
+#### Réponse
+
+Renvoie un `Array<Species>`. Voir [la structure Species](#species).
+
+#### Exemple
+
+GET `/api/species/missing-data?limit=2`
+
+```json
+[
+  {
+    "id": 9746,
+    "kingdom": "Plantae",
+    "phylum": null,
+    "class": null,
+    "order": "Orchidales",
+    "family": "Orchidaceae",
+    "genus": "Bulbophyllum",
+    "species": "grandifolium",
+    "subspecies": null,
+    "name": "Bulbophyllum grandifolium",
+    "common_name": null,
+    "common_name_fr": null,
+    "common_name_en": null,
+    "author": "Schltr.",
+    "listing": "B",
+    "cites": "II",
+    "wikidata_id": "Q4988105",
+    "wikipedia_url": null,
+    "image_url": null
+  },
+  {
+    "id": 7583,
+    "kingdom": "Plantae",
+    "phylum": null,
+    "class": null,
+    "order": "Orchidales",
+    "family": "Orchidaceae",
+    "genus": "Cephalanthera",
+    "species": "cucullata",
+    "subspecies": null,
+    "name": "Cephalanthera cucullata",
+    "common_name": null,
+    "common_name_fr": null,
+    "common_name_en": null,
+    "author": "Boiss. & Heldr.",
+    "listing": "A",
+    "cites": "II",
+    "wikidata_id": "Q15443718",
+    "wikipedia_url": null,
+    "image_url": "http://commons.wikimedia.org/wiki/Special:FilePath/Cephalanthera%20cucullata.jpg"
+  }
+]
+```
+
 ## Recherche espèces
 
 GET `/api/species/search`
