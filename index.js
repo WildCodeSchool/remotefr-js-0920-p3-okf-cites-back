@@ -3,7 +3,9 @@ const cors = require('cors');
 const compression = require('compression');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const cron = require('node-cron');
 const { port } = require('./config');
+const syncWithWikidata = require('./db/sync-with-wikidata');
 
 const speciesRouter = require('./routes/species.js');
 const dumpRouter = require('./routes/dump.js');
@@ -33,4 +35,6 @@ app.listen(port, (err) => {
   } else {
     console.log(`Express server listening on ${port}`);
   }
+
+  cron.schedule('0 */12 * * *', syncWithWikidata);
 });

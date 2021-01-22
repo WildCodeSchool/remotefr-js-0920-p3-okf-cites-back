@@ -1,15 +1,13 @@
-# Node.js / Express template
+# Utilisation
 
-This template provides:
+1. Installez les dépendances avec `npm install` (ou yarn ou pnpm)
+2. Copiez `.env.sample`, renommez le en `.env` et remplissez les variables
+3. Lancez les migrations de la base de données avec `npm run migrate:latest`
+4. Lancez le serveur avec `npm run start` (prod) ou `npm run start:dev` (dev)
 
-* A basic Express app in `index.js`
-* `dotenv`, a sample env file (`.env.sample`) and a `config.js` file to export config variables
-* ESLint with Airbnb rules
-* Prettier
-* Automatic linting on commit: **you can't commit if you have ESLint errors**
+# Synchronisation wikidata
 
-## Usage
+Le site met à jour la base de données avec wikidata 2 fois par jour. (Expression cron : `0 */12 * * *`)  
+Pour lancer **manuellement** une synchronisation, lancez `npm run sync-with-wikidata`.
 
-1. Install dependencies: `npm install` (alternatively, you can use Yarn or PNPM)
-2. Copy `.env.sample` as `.env` and adjust it to your needs
-3. Start the app on your local machine: `npm run start:dev`
+La requête SPARQL effectué pour récupérer les données d'une espèce ce trouve dans le fichier [db/sync-with-wikidata.js](db/sync-with-wikidata.js)
