@@ -41,18 +41,26 @@ router.get('/datavis', async (req, res) => {
     .whereNull('wikidata_id')
     .groupBy('kingdom');
 
+  const kingdomArticle = knex('species')
+    .select('kingdom')
+    .count('*', { as: 'count' })
+    .whereNull('wikipedia_url')
+    .groupBy('kingdom');
+
   const [
     kingdomDataCites,
     kingdomDataImage,
     kingdomDataTotal,
     kingdomDataCommon,
     kingdomDataWikiId,
+    kingdomDataArticle,
   ] = await Promise.all([
     kingdomCites,
     kingdomImage,
     kingdomTotal,
     kingdomCommon,
     kingdomWikiId,
+    kingdomArticle,
   ]);
   return res.json({
     kingdomDataCites,
@@ -60,6 +68,7 @@ router.get('/datavis', async (req, res) => {
     kingdomDataTotal,
     kingdomDataCommon,
     kingdomDataWikiId,
+    kingdomDataArticle,
   });
 });
 
