@@ -3,8 +3,11 @@ const knex = require('./knex');
 const { Semaphore } = require('../utils');
 
 function getSPARQLQuery(entityId) {
-  return `SELECT ?common_name_fr ?common_name_en ?wikipedia_url ?image_url WHERE {
+  return `SELECT ?species_plus_id ?common_name_fr ?common_name_en ?wikipedia_url ?image_url WHERE {
         BIND(wd:${entityId} AS ?item)
+        OPTIONAL {
+          ?item wdt:P2040 ?species_plus_id
+        }
         OPTIONAL {
           ?item wdt:P1843 ?common_name_fr.
           FILTER((LANG(?common_name_fr)) = "fr")
@@ -33,6 +36,7 @@ async function fetchAndUpdateSpecies(species) {
   });
 
   /* eslint-disable camelcase */
+  const species_plus_id = data.results?.bindings?.[0]?.species_plus_id?.value;
   const common_name_fr = data.results?.bindings?.[0]?.common_name_fr?.value;
   const common_name_en = data.results?.bindings?.[0]?.common_name_en?.value;
   const image_url = data.results?.bindings?.[0]?.image_url?.value;
@@ -43,6 +47,7 @@ async function fetchAndUpdateSpecies(species) {
   if ([common_name_fr, common_name_en, image_url, wikipedia_url].some((val) => val != null)) {
     await knex('species')
       .update({
+        'species+_id': species_plus_id,
         common_name_fr,
         common_name_en,
         wikipedia_url,
@@ -61,19 +66,23 @@ async function syncWithWikidata() {
     .whereNotNull('wikidata_id')
     .where((builder) => {
       builder
-        .whereNull('common_name_fr')
+        .whereNull('species+_id')
+        .orWhereNull('common_name_fr')
         .orWhereNull('common_name_en')
         .orWhereNull('wikipedia_url')
         .orWhereNull('image_url');
     })
     .select(['id', 'wikidata_id']);
 
+  const idsWithError = [];
   const semaphore = new Semaphore(5); // Wikidata is rate limited to 5 queries at a time
   const fetchWithSemaphore = async (species) => {
     await semaphore.acquire();
     try {
       await fetchAndUpdateSpecies(species);
     } catch (err) {
+      idsWithError.push(species.id);
+
       console.error(
         `Error while updating species ${species.id} (${species.wikidata_id})`,
         err,
@@ -86,6 +95,10 @@ async function syncWithWikidata() {
 
   console.log('Syncing database with wikidata done');
   console.timeEnd('sync time');
+
+  if (idsWithError.length > 0) {
+    console.error('Error on species with ids', idsWithError);
+  }
 }
 
 module.exports = syncWithWikidata;

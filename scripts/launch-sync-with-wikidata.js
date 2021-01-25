@@ -1,3 +1,5 @@
 const syncWithWikidata = require('../db/sync-with-wikidata');
 
-syncWithWikidata();
+syncWithWikidata().then(() => {
+  process.exit(0);
+});
