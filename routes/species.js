@@ -14,6 +14,55 @@ router.get('/', async (req, res) => {
   return res.json({ species, total: count });
 });
 
+router.get('/datavis', async (req, res) => {
+  const kingdomCites = knex('species')
+    .select('kingdom')
+    .count('*', { as: 'count' })
+    .where('cites', '=', '?')
+    .groupBy('kingdom');
+  const kingdomImage = knex('species')
+    .select('Kingdom')
+    .count('*', { as: 'count' })
+    .whereNull('image_url')
+    .groupBy('kingdom');
+  const kingdomTotal = knex('species')
+    .select('kingdom')
+    .count('*', { as: 'count' })
+    .groupBy('kingdom');
+  const kingdomCommon = knex('species')
+    .select('Kingdom')
+    .count('*', { as: 'count' })
+    .whereNull('common_name_fr')
+    .groupBy('kingdom');
+
+  const kingdomWikiId = knex('species')
+    .select('Kingdom')
+    .count('*', { as: 'count' })
+    .whereNull('wikidata_id')
+    .groupBy('kingdom');
+
+  const [
+    kingdomDataCites,
+    kingdomDataImage,
+    kingdomDataTotal,
+    kingdomDataCommon,
+    kingdomDataWikiId,
+  ] = await Promise.all([
+    kingdomCites,
+    kingdomImage,
+    kingdomTotal,
+    kingdomCommon,
+    kingdomWikiId,
+  ]);
+  return res.json({
+    kingdomDataCites,
+    kingdomDataImage,
+    kingdomDataTotal,
+    kingdomDataCommon,
+    kingdomDataWikiId,
+  });
+});
+
 router.get('/search', async (req, res) => {
   const {
     query = '',
