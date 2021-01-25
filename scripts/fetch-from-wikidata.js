@@ -1,3 +1,5 @@
+// Use npm run sync-with-wikidata instead
+
 /* eslint-disable no-plusplus */
 /* eslint-disable camelcase */
 /* eslint-disable no-continue */
