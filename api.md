@@ -394,6 +394,22 @@ GET `/api/species/5601`
 }
 ```
 
+## Image réduite d'une espèce
+
+GET `/api/species/:id/small-image`
+
+Cette route n'a pas de limite de requête.
+
+#### Paramètres de requête
+
+| Nom | Description     | Type     |
+| --- | --------------- | -------- |
+| :id | Id de l'espèce. | `number` |
+
+#### Réponse
+
+Renvoie une image de l'espèce au format JPEG de taille 300x250.
+
 ## Dump de la base de données
 
 GET `/api/species/dump`

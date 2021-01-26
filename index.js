@@ -20,6 +20,7 @@ app.use(compression());
 const regularLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 30,
+  skip: (req) => req.path.endsWith('small-image'), // Don't limit /api/species/:id/small-image route
 });
 const dumpLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute

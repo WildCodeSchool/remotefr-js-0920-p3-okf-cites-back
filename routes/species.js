@@ -1,5 +1,6 @@
 const express = require('express');
 const knex = require('../db/knex');
+const { getImage } = require('../image-proxy');
 
 const router = express.Router();
 
@@ -181,6 +182,18 @@ router.get('/:id', async (req, res) => {
   ]);
 
   res.json({ ...species, countries });
+});
+
+router.get('/:id/small-image', async (req, res) => {
+  const { id } = req.params;
+
+  const imageUrl = (
+    await knex('species').where('id', '=', id).select('image_url').first()
+  ).image_url;
+
+  res.contentType('image/jpeg');
+
+  res.send(await getImage(imageUrl));
 });
 
 module.exports = router;
