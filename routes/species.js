@@ -51,15 +51,103 @@ router.get('/datavis', async (req, res) => {
     .whereNull('wikipedia_url')
     .groupBy('kingdom');
 
+  // class and order
+  //  animal
   const ClassDispatch = knex('species')
     .select('class')
     .count('*', { as: 'count' })
     .where('kingdom', '=', 'Animalia')
     .groupBy('class');
+
+  const ClassDispatchCites = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .where('cites', '=', '?')
+    .groupBy('class');
+
+  const ClassDispatchImage = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .whereNull('image_url')
+    .groupBy('class');
+
+  const ClassDispatchCommonFr = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .whereNull('common_name_fr')
+    .groupBy('class');
+
+  const ClassDispatchCommonEn = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .whereNull('common_name_en')
+    .groupBy('class');
+
+  const ClassDispatchWikiID = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .whereNull('wikidata_id')
+    .groupBy('class');
+
+  const ClassDispatchWikArticle = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .whereNull('wikipedia_url')
+    .groupBy('class');
+
+  // vegetal
   const ClassDispatchVeg = knex('species')
     .select('order')
     .count('*', { as: 'count' })
     .where('kingdom', '=', 'Plantae')
+    .groupBy('order');
+
+  const ClassDispatchVegCites = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .where('cites', '=', '?')
+    .groupBy('order');
+
+  const ClassDispatchVegImage = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .whereNull('image_url')
+    .groupBy('order');
+
+  const ClassDispatchVegCommonFr = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .whereNull('common_name_fr')
+    .groupBy('order');
+
+  const ClassDispatchVegCommonEn = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .whereNull('common_name_en')
+    .groupBy('order');
+
+  const ClassDispatchVegWikiID = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .whereNull('wikidata_id')
+    .groupBy('order');
+
+  const ClassDispatchVegWikArticle = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .whereNull('wikipedia_url')
     .groupBy('order');
 
   const [
@@ -72,6 +160,18 @@ router.get('/datavis', async (req, res) => {
     kingdomDataArticle,
     ClassDataDispatch,
     ClassDataDispatchVeg,
+    ClassDataDispatchCites,
+    ClassDataDispatchImage,
+    ClassDataDispatchCommonFr,
+    ClassDataDispatchCommonEn,
+    ClassDataDispatchWikiID,
+    ClassDataDispatchWikArticle,
+    ClassDataDispatchVegCites,
+    ClassDataDispatchVegImage,
+    ClassDataDispatchVegCommonFr,
+    ClassDataDispatchVegCommonEn,
+    ClassDataDispatchVegWikiID,
+    ClassDataDispatchVegWikArticle,
   ] = await Promise.all([
     kingdomCites,
     kingdomImage,
@@ -82,6 +182,18 @@ router.get('/datavis', async (req, res) => {
     kingdomArticle,
     ClassDispatch,
     ClassDispatchVeg,
+    ClassDispatchCites,
+    ClassDispatchVegCites,
+    ClassDispatchImage,
+    ClassDispatchCommonFr,
+    ClassDispatchCommonEn,
+    ClassDispatchWikiID,
+    ClassDispatchWikArticle,
+    ClassDispatchVegImage,
+    ClassDispatchVegCommonFr,
+    ClassDispatchVegCommonEn,
+    ClassDispatchVegWikiID,
+    ClassDispatchVegWikArticle,
   ]);
   return res.json({
     kingdomDataCites,
@@ -93,6 +205,18 @@ router.get('/datavis', async (req, res) => {
     kingdomDataArticle,
     ClassDataDispatch,
     ClassDataDispatchVeg,
+    ClassDataDispatchCites,
+    ClassDataDispatchVegCites,
+    ClassDataDispatchImage,
+    ClassDataDispatchCommonFr,
+    ClassDataDispatchCommonEn,
+    ClassDataDispatchWikiID,
+    ClassDataDispatchWikArticle,
+    ClassDataDispatchVegImage,
+    ClassDataDispatchVegCommonFr,
+    ClassDataDispatchVegCommonEn,
+    ClassDataDispatchVegWikiID,
+    ClassDataDispatchVegWikArticle,
   });
 });
 
