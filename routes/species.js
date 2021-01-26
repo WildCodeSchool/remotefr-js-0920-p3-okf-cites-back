@@ -51,6 +51,17 @@ router.get('/datavis', async (req, res) => {
     .whereNull('wikipedia_url')
     .groupBy('kingdom');
 
+  const ClassDispatch = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .groupBy('class');
+  const ClassDispatchVeg = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .groupBy('order');
+
   const [
     kingdomDataCites,
     kingdomDataImage,
@@ -59,6 +70,8 @@ router.get('/datavis', async (req, res) => {
     kingdomDataCommonEn,
     kingdomDataWikiId,
     kingdomDataArticle,
+    ClassDataDispatch,
+    ClassDataDispatchVeg,
   ] = await Promise.all([
     kingdomCites,
     kingdomImage,
@@ -67,6 +80,8 @@ router.get('/datavis', async (req, res) => {
     kingdomCommonEn,
     kingdomWikiId,
     kingdomArticle,
+    ClassDispatch,
+    ClassDispatchVeg,
   ]);
   return res.json({
     kingdomDataCites,
@@ -76,6 +91,8 @@ router.get('/datavis', async (req, res) => {
     kingdomDataCommonEn,
     kingdomDataWikiId,
     kingdomDataArticle,
+    ClassDataDispatch,
+    ClassDataDispatchVeg,
   });
 });
 
