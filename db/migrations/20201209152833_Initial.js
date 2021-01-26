@@ -23,6 +23,7 @@ module.exports.up = async function up(knex) {
       table.string('author');
       table.string('listing');
       table.enum('cites', ['I', 'II', 'I/II', 'III', '?']);
+      table.integer('species+_id');
       table.string('wikidata_id');
       table.string('wikipedia_url', 2000);
       table.string('image_url', 2000);
