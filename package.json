@@ -26,7 +26,8 @@
     "knex": "^0.21.12",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
-    "node-cron": "^2.0.3"
+    "node-cron": "^2.0.3",
+    "sharp": "^0.27.0"
   },
   "devDependencies": {
     "csv-parser": "^3.0.0",

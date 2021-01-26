@@ -18,6 +18,7 @@
 | common_name_fr | [Nom commun (Nom vernaculaire)](https://fr.wikipedia.org/wiki/Nom_vernaculaire) français de l'espèce.                                                                                                          | `string \| null` |                                                                                                                                                                                                                            |
 | common_name_en | [Nom commun (Nom vernaculaire)](https://fr.wikipedia.org/wiki/Nom_vernaculaire) anglais de l'espèce.                                                                                                           | `string \| null` |                                                                                                                                                                                                                            |
 | cites          | [Annexe CITES](https://cites.org/fra/app/index.php) de l'espèce.                                                                                                                                               | `string`         | `"I", "II", "III", "I/II", "?"`                                                                                                                                                                                            |
+| species+\_id   | Identifiant [Species+](https://speciesplus.net/) de l'espèce.                                                                                                                                                  | `number`         |                                                                                                                                                                                                                            |
 | wikidata_id    | [Identifiant item wikidata](https://www.wikidata.org/wiki/Wikidata:Identifiers) de l'espèce. Commence toujours pas `Q`.                                                                                        | `string \| null` |                                                                                                                                                                                                                            |
 | wikipedia_url  | Url de l'article wikipedia français de l'espèce.                                                                                                                                                               | `string \| null` |                                                                                                                                                                                                                            |
 | image_url      | Url d'une image wikimedia de l'espèce.                                                                                                                                                                         | `string \| null` |                                                                                                                                                                                                                            |
@@ -392,6 +393,24 @@ GET `/api/species/5601`
   }
 }
 ```
+
+## Image réduite d'une espèce
+
+GET `/api/species/:id/small-image`
+
+Cette route n'a pas de limite de requête.
+
+#### Paramètres de requête
+
+| Nom | Description     | Type     |
+| --- | --------------- | -------- |
+| :id | Id de l'espèce. | `number` |
+
+#### Réponse
+
+Renvoie une image de l'espèce au format JPEG de taille 300x250.
+
+Renvoie 404 si l'espèce n'existe pas ou si il n'y a pas d'image pour cette espèce.
 
 ## Dump de la base de données
 
