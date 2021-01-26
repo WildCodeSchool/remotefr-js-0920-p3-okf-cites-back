@@ -189,11 +189,15 @@ router.get('/:id/small-image', async (req, res) => {
 
   const imageUrl = (
     await knex('species').where('id', '=', id).select('image_url').first()
-  ).image_url;
+  )?.image_url;
+
+  if (imageUrl == null) {
+    return res.sendStatus(404);
+  }
 
   res.contentType('image/jpeg');
 
-  res.send(await getImage(imageUrl));
+  return res.send(await getImage(imageUrl));
 });
 
 module.exports = router;
