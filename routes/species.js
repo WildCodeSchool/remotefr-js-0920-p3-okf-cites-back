@@ -29,12 +29,16 @@ router.get('/datavis', async (req, res) => {
     .select('kingdom')
     .count('*', { as: 'count' })
     .groupBy('kingdom');
-  const kingdomCommon = knex('species')
+  const kingdomCommonFr = knex('species')
     .select('Kingdom')
     .count('*', { as: 'count' })
     .whereNull('common_name_fr')
     .groupBy('kingdom');
-
+  const kingdomCommonEn = knex('species')
+    .select('Kingdom')
+    .count('*', { as: 'count' })
+    .whereNull('common_name_en')
+    .groupBy('kingdom');
   const kingdomWikiId = knex('species')
     .select('Kingdom')
     .count('*', { as: 'count' })
@@ -51,14 +55,16 @@ router.get('/datavis', async (req, res) => {
     kingdomDataCites,
     kingdomDataImage,
     kingdomDataTotal,
-    kingdomDataCommon,
+    kingdomDataCommonFr,
+    kingdomDataCommonEn,
     kingdomDataWikiId,
     kingdomDataArticle,
   ] = await Promise.all([
     kingdomCites,
     kingdomImage,
     kingdomTotal,
-    kingdomCommon,
+    kingdomCommonFr,
+    kingdomCommonEn,
     kingdomWikiId,
     kingdomArticle,
   ]);
@@ -66,7 +72,8 @@ router.get('/datavis', async (req, res) => {
     kingdomDataCites,
     kingdomDataImage,
     kingdomDataTotal,
-    kingdomDataCommon,
+    kingdomDataCommonFr,
+    kingdomDataCommonEn,
     kingdomDataWikiId,
     kingdomDataArticle,
   });
