@@ -1,5 +1,6 @@
 const express = require('express');
 const knex = require('../db/knex');
+const { getImage } = require('../image-proxy');
 
 const router = express.Router();
 
@@ -30,6 +31,212 @@ router.get('/missing-data', async (req, res) => {
     .orderByRaw('RAND()');
 
   return res.json(speciesWithMissingData);
+});
+
+router.get('/datavis', async (req, res) => {
+  const kingdomCites = knex('species')
+    .select('kingdom')
+    .count('*', { as: 'count' })
+    .where('cites', '=', '?')
+    .groupBy('kingdom');
+  const kingdomImage = knex('species')
+    .select('Kingdom')
+    .count('*', { as: 'count' })
+    .whereNull('image_url')
+    .groupBy('kingdom');
+  const kingdomTotal = knex('species')
+    .select('kingdom')
+    .count('*', { as: 'count' })
+    .groupBy('kingdom');
+  const kingdomCommonFr = knex('species')
+    .select('Kingdom')
+    .count('*', { as: 'count' })
+    .whereNull('common_name_fr')
+    .groupBy('kingdom');
+  const kingdomCommonEn = knex('species')
+    .select('Kingdom')
+    .count('*', { as: 'count' })
+    .whereNull('common_name_en')
+    .groupBy('kingdom');
+  const kingdomWikiId = knex('species')
+    .select('Kingdom')
+    .count('*', { as: 'count' })
+    .whereNull('wikidata_id')
+    .groupBy('kingdom');
+
+  const kingdomArticle = knex('species')
+    .select('kingdom')
+    .count('*', { as: 'count' })
+    .whereNull('wikipedia_url')
+    .groupBy('kingdom');
+
+  // class and order
+  //  animal
+  const ClassDispatch = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .groupBy('class');
+
+  const ClassDispatchCites = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .where('cites', '=', '?')
+    .groupBy('class');
+
+  const ClassDispatchImage = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .whereNull('image_url')
+    .groupBy('class');
+
+  const ClassDispatchCommonFr = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .whereNull('common_name_fr')
+    .groupBy('class');
+
+  const ClassDispatchCommonEn = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .whereNull('common_name_en')
+    .groupBy('class');
+
+  const ClassDispatchWikiID = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .whereNull('wikidata_id')
+    .groupBy('class');
+
+  const ClassDispatchWikArticle = knex('species')
+    .select('class')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Animalia')
+    .whereNull('wikipedia_url')
+    .groupBy('class');
+
+  // vegetal
+  const ClassDispatchVeg = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .groupBy('order');
+
+  const ClassDispatchVegCites = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .where('cites', '=', '?')
+    .groupBy('order');
+
+  const ClassDispatchVegImage = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .whereNull('image_url')
+    .groupBy('order');
+
+  const ClassDispatchVegCommonFr = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .whereNull('common_name_fr')
+    .groupBy('order');
+
+  const ClassDispatchVegCommonEn = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .whereNull('common_name_en')
+    .groupBy('order');
+
+  const ClassDispatchVegWikiID = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .whereNull('wikidata_id')
+    .groupBy('order');
+
+  const ClassDispatchVegWikArticle = knex('species')
+    .select('order')
+    .count('*', { as: 'count' })
+    .where('kingdom', '=', 'Plantae')
+    .whereNull('wikipedia_url')
+    .groupBy('order');
+
+  const [
+    kingdomDataCites,
+    kingdomDataImage,
+    kingdomDataTotal,
+    kingdomDataCommonFr,
+    kingdomDataCommonEn,
+    kingdomDataWikiId,
+    kingdomDataArticle,
+    ClassDataDispatch,
+    ClassDataDispatchVeg,
+    ClassDataDispatchCites,
+    ClassDataDispatchImage,
+    ClassDataDispatchCommonFr,
+    ClassDataDispatchCommonEn,
+    ClassDataDispatchWikiID,
+    ClassDataDispatchWikArticle,
+    ClassDataDispatchVegCites,
+    ClassDataDispatchVegImage,
+    ClassDataDispatchVegCommonFr,
+    ClassDataDispatchVegCommonEn,
+    ClassDataDispatchVegWikiID,
+    ClassDataDispatchVegWikArticle,
+  ] = await Promise.all([
+    kingdomCites,
+    kingdomImage,
+    kingdomTotal,
+    kingdomCommonFr,
+    kingdomCommonEn,
+    kingdomWikiId,
+    kingdomArticle,
+    ClassDispatch,
+    ClassDispatchVeg,
+    ClassDispatchCites,
+    ClassDispatchImage,
+    ClassDispatchCommonFr,
+    ClassDispatchCommonEn,
+    ClassDispatchWikiID,
+    ClassDispatchWikArticle,
+    ClassDispatchVegCites,
+    ClassDispatchVegImage,
+    ClassDispatchVegCommonFr,
+    ClassDispatchVegCommonEn,
+    ClassDispatchVegWikiID,
+    ClassDispatchVegWikArticle,
+  ]);
+  return res.json({
+    kingdomDataCites,
+    kingdomDataImage,
+    kingdomDataTotal,
+    kingdomDataCommonFr,
+    kingdomDataCommonEn,
+    kingdomDataWikiId,
+    kingdomDataArticle,
+    ClassDataDispatch,
+    ClassDataDispatchVeg,
+    ClassDataDispatchCites,
+    ClassDataDispatchImage,
+    ClassDataDispatchCommonFr,
+    ClassDataDispatchCommonEn,
+    ClassDataDispatchWikiID,
+    ClassDataDispatchWikArticle,
+    ClassDataDispatchVegCites,
+    ClassDataDispatchVegImage,
+    ClassDataDispatchVegCommonFr,
+    ClassDataDispatchVegCommonEn,
+    ClassDataDispatchVegWikiID,
+    ClassDataDispatchVegWikArticle,
+  });
 });
 
 router.get('/search', async (req, res) => {
@@ -199,6 +406,22 @@ router.get('/:id', async (req, res) => {
   ]);
 
   res.json({ ...species, countries });
+});
+
+router.get('/:id/small-image', async (req, res) => {
+  const { id } = req.params;
+
+  const imageUrl = (
+    await knex('species').where('id', '=', id).select('image_url').first()
+  )?.image_url;
+
+  if (imageUrl == null) {
+    return res.sendStatus(404);
+  }
+
+  res.contentType('image/jpeg');
+
+  return res.send(await getImage(imageUrl));
 });
 
 module.exports = router;
