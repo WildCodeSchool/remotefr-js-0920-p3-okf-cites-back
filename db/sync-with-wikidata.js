@@ -42,17 +42,22 @@ async function fetchAndUpdateSpecies(species) {
   const image_url = data.results?.bindings?.[0]?.image_url?.value;
   const wikipedia_url = data.results?.bindings?.[0]?.wikipedia_url?.value;
 
-  // Only update db if at least one value is not undefined
-  // prettier-ignore
-  if ([common_name_fr, common_name_en, image_url, wikipedia_url].some((val) => val != null)) {
+  const updateData = {
+    'species+_id': species_plus_id,
+    common_name_fr,
+    common_name_en,
+    wikipedia_url,
+    image_url,
+  };
+  // Remove null and undefined values
+  const updateDataFiltered = Object.fromEntries(
+    Object.entries(updateData).filter(([, val]) => val != null),
+  );
+
+  // Only update db if non null value is available
+  if (Object.keys(updateDataFiltered).length) {
     await knex('species')
-      .update({
-        'species+_id': species_plus_id,
-        common_name_fr,
-        common_name_en,
-        wikipedia_url,
-        image_url,
-      })
+      .update(updateDataFiltered)
       .where('id', '=', species.id);
   }
   /* eslint-enable camelcase */
