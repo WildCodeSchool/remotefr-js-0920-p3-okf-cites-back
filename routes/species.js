@@ -401,9 +401,20 @@ router.get('/:id/small-image', async (req, res) => {
     return res.sendStatus(404);
   }
 
-  res.contentType('image/jpeg');
+  try {
+    res.contentType('image/jpeg');
 
-  return res.send(await getImage(imageUrl));
+    return res.send(await getImage(imageUrl));
+  } catch (e) {
+    if (e.isAxiosError && e.response?.status === 404) {
+      // Image doesn't exist
+      await knex('species').update({ image_url: null }).where('id', '=', id);
+      return res.sendStatus(404);
+    }
+
+    // Rethrow if other error
+    throw e;
+  }
 });
 
 module.exports = router;
