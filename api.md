@@ -289,6 +289,8 @@ GET `/api/species/:id`
 | &nbsp;&nbsp;countries.extinct      | Pays où l'espèce est devenu éteint. **Cette propriété est parfois absente.**                     | `Array<Country>`         |
 | &nbsp;&nbsp;countries.uncertain    | Pays où l'espèce dont l'état de l'espèce est incertain. **Cette propriété est parfois absente.** | `Array<Country>`         |
 
+Renvoie 404 si il n'existe pas d'espèce ayant l'id `:id`.
+
 #### Exemple
 
 GET `/api/species/5601`
