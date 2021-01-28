@@ -12,7 +12,7 @@ module.exports.up = async function up(knex) {
       table.string('subspecies');
       table.specificType(
         'name',
-        "VARCHAR(510) AS (CONCAT(genus, ' ', species))",
+        "VARCHAR(510) AS (CONCAT_WS(' ', genus, species, subspecies))",
       );
       table.specificType(
         'common_name',
@@ -23,8 +23,8 @@ module.exports.up = async function up(knex) {
       table.string('author');
       table.string('listing');
       table.enum('cites', ['I', 'II', 'I/II', 'III', '?']);
-      table.integer('species+_id');
-      table.string('wikidata_id');
+      table.integer('species+_id').unique();
+      table.string('wikidata_id').unique();
       table.string('wikipedia_url', 2000);
       table.string('image_url', 2000);
     })
