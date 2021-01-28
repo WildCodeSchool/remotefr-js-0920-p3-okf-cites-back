@@ -1,4 +1,5 @@
 const express = require('express');
+require('express-async-errors');
 const cors = require('cors');
 const compression = require('compression');
 const morgan = require('morgan');
@@ -30,6 +31,14 @@ const dumpLimiter = rateLimit({
 app.use('/api/species', regularLimiter, speciesRouter);
 app.use('/api/dump', dumpLimiter, dumpRouter);
 
+// Error handlers in express are recognized by having 4 parameters
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.log(err);
+
+  res.sendStatus(500);
+});
+
 app.listen(port, (err) => {
   if (err) {
     console.error(err);
@@ -37,5 +46,5 @@ app.listen(port, (err) => {
     console.log(`Express server listening on ${port}`);
   }
 
-  cron.schedule('0 */12 * * *', syncWithWikidata);
+  cron.schedule('0 0 1 * *', syncWithWikidata);
 });

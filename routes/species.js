@@ -405,7 +405,11 @@ router.get('/:id', async (req, res) => {
     getCountriesByType(),
   ]);
 
-  res.json({ ...species, countries });
+  if (species == null) {
+    return res.sendStatus(404);
+  }
+
+  return res.json({ ...species, countries });
 });
 
 router.get('/:id/small-image', async (req, res) => {
