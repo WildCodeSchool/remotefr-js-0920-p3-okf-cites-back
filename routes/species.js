@@ -15,6 +15,24 @@ router.get('/', async (req, res) => {
   return res.json({ species, total: count });
 });
 
+router.get('/missing-data', async (req, res) => {
+  const { limit = 20 } = req.query;
+
+  const speciesWithMissingData = await knex('species')
+    .whereNotNull('wikidata_id')
+    .where((builder) => {
+      builder
+        .whereNull('common_name_fr')
+        .orWhereNull('common_name_en')
+        .orWhereNull('wikipedia_url')
+        .orWhereNull('image_url');
+    })
+    .limit(limit)
+    .orderByRaw('RAND()');
+
+  return res.json(speciesWithMissingData);
+});
+
 router.get('/datavis', async (req, res) => {
   const kingdomCites = knex('species')
     .select('kingdom')
