@@ -35,7 +35,7 @@
 
 Les routes sont limitées à **30 requêtes par minutes**. Au delà, le serveur renverra une erreur 429.
 
-## Toute les espèces
+## Toutes les espèces
 
 GET `/api/species/`
 
@@ -107,7 +107,7 @@ GET `/api/species/?limit=2&offset=5`
 }
 ```
 
-## Espèces aléatoire avec données manquantes
+## Espèces aléatoires avec données manquantes
 
 GET `/api/species/missing-data`
 
@@ -180,8 +180,8 @@ GET `/api/species/search`
 
 | Nom     | Description                                                                           | Type            | Valeur(s) possible(s)                                                                                                                                                                                                | Valeur(s) par défaut                                                                                                                                                                                                   |
 | ------- | ------------------------------------------------------------------------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| query   | Terme à rechercher sur le nom scientifique et le nom commun d'un espèce               | `string`        |                                                                                                                                                                                                                      | `""`                                                                                                                                                                                                                   |
-| kingdom | Règnes de l'espèces. "Animalia" pour la faune, "Plantae" pour la flore.               | `Array<string>` | `"Animalia", "Plantae"`                                                                                                                                                                                              | `["Animalia", "Plantae"]`                                                                                                                                                                                              |
+| query   | Terme à rechercher sur le nom scientifique et le nom commun d'une espèce              | `string`        |                                                                                                                                                                                                                      | `""`                                                                                                                                                                                                                   |
+| kingdom | Règnes de l'espèce. "Animalia" pour la faune, "Plantae" pour la flore.                | `Array<string>` | `"Animalia", "Plantae"`                                                                                                                                                                                              | `["Animalia", "Plantae"]`                                                                                                                                                                                              |
 | class   | Classes biologiques de l'espèce. N'affecte que la faune.                              | `Array<string>` | `"Actinopteri", "Amphibia", "Anthozoa", "Arachnida", "Aves", "Bivalvia", "Coelacanthi", "Dipneusti", "Elasmobranchii", "Gastropoda", "Hirudinoidea", "Holothuroidea", "Hydrozoa", "Insecta", "Mammalia", "Reptilia"` | `["Actinopteri", "Amphibia", "Anthozoa", "Arachnida", "Aves", "Bivalvia", "Coelacanthi", "Dipneusti", "Elasmobranchii", "Gastropoda", "Hirudinoidea", "Holothuroidea", "Hydrozoa", "Insecta", "Mammalia", "Reptilia"]` |
 | cites   | Annexes CITES de l'espèce.                                                            | `Array<string>` | `"I", "II", "III", "I/II", "?"`                                                                                                                                                                                      | `["I", "II", "III", "I/II", "?"]`                                                                                                                                                                                      |
 | limit   | Limite le nombre maximum d'espèces retournées.                                        | `number`        |                                                                                                                                                                                                                      | 20                                                                                                                                                                                                                     |
@@ -191,7 +191,7 @@ GET `/api/species/search`
 
 | Nom                        | Description                                                                                 | Type                               |
 | -------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------- |
-| species                    | Espèces correspondants aux critères de recherche. Voir [la structure Species](#species).    | `Array<Species>`                   |
+| species                    | Espèces correspondantes aux critères de recherche. Voir [la structure Species](#species).   | `Array<Species>`                   |
 | counts                     | Comptes de la base de données.                                                              | `Object<number \| Object<number>>` |
 | &nbsp;&nbsp;counts.total   | Nombre d'espèces total dans la base de données. **Ignore les critères de recherche.**       | `number`                           |
 | &nbsp;&nbsp;counts.kingdom | Nombre d'espèces pour chaque règnes. **Ne prend en compte que le critère `query`.**         | `Object<number>`                   |
@@ -283,10 +283,10 @@ GET `/api/species/:id`
 | ---------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------ |
 | ...Species                         | Informations de l'espèce. Voir [la structure Species](#species).                                 | `Species`                |
 | countries                          | Comptes de la base de données. Voir [la structure Country](#country).                            | `Object<Array<Country>>` |
-| &nbsp;&nbsp;countries.native       | Pays où l'espèce est natif. **Cette propriété est parfois absente.**                             | `Array<Country>`         |
+| &nbsp;&nbsp;countries.native       | Pays où l'espèce est native. **Cette propriété est parfois absente.**                            | `Array<Country>`         |
 | &nbsp;&nbsp;countries.introduced   | Pays où l'espèce a été introduite. **Cette propriété est parfois absente.**                      | `Array<Country>`         |
 | &nbsp;&nbsp;countries.reintroduced | Pays où l'espèce a été réintroduite. **Cette propriété est parfois absente.**                    | `Array<Country>`         |
-| &nbsp;&nbsp;countries.extinct      | Pays où l'espèce est devenu éteint. **Cette propriété est parfois absente.**                     | `Array<Country>`         |
+| &nbsp;&nbsp;countries.extinct      | Pays où l'espèce s'est éteinte. **Cette propriété est parfois absente.**                         | `Array<Country>`         |
 | &nbsp;&nbsp;countries.uncertain    | Pays où l'espèce dont l'état de l'espèce est incertain. **Cette propriété est parfois absente.** | `Array<Country>`         |
 
 Renvoie 404 si il n'existe pas d'espèce ayant l'id `:id`.
@@ -484,4 +484,4 @@ Renvoie 404 si l'espèce n'existe pas ou si il n'y a pas d'image pour cette esp�
 GET `/api/species/dump`
 
 Renvoie un fichier sql généré avec [mysqldump](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html).  
-Cette route est limité à **1 requête par minutes.**
+Cette route est limitée à **1 requête par minute.**
