@@ -31,6 +31,18 @@
 | iso_code  | Code 2 lettre [ISO 3166-1 alpha-2](https://fr.wikipedia.org/wiki/ISO_3166-1_alpha-2) du pays. | `string`  |
 | uncertain | Incertidute de l'information. Si `true`, l'information peut-être incorrecte.                  | `boolean` |
 
+## Stats
+
+| Nom            | Description                                      | Type     |
+| -------------- | ------------------------------------------------ | -------- |
+| total          | Nombre total dans la base de données.            | `number` |
+| cites          | Nombre ayant un annexe CITES inconnu.            | `number` |
+| image_url      | Nombre n'ayant pas d'image.                      | `number` |
+| common_name_fr | Nombre n'ayant pas de nom vernaculaire français. | `number` |
+| common_name_en | Nombre n'ayant pas de nom vernaculaire anglais.  | `number` |
+| wikidata_id    | Nombre n'ayant pas d'id wikidata.                | `number` |
+| wikipedia_url  | Nombre n'ayant pas d'article wikipedia français. | `number` |
+
 # API
 
 Les routes sont limitées à **30 requêtes par minutes**. Au delà, le serveur renverra une erreur 429.
@@ -172,6 +184,585 @@ GET `/api/species/missing-data?limit=2`
 ]
 ```
 
+<<<<<<< HEAD
+=======
+## Statistiques sur les données manquantes des espcèes
+
+GET `/api/species/stats`
+
+#### Réponse
+
+| Nom      | Description                                                            | Type            |
+| -------- | ---------------------------------------------------------------------- | --------------- |
+| kingdom  | Statistiques par règne. Voir [la structure Stats](#stats).             | `Object<Stats>` |
+| animalia | Statistiques de la faune par class. Voir [la structure Stats](#stats). | `Object<Stats>` |
+| plantae  | Statistiques de la flore par ordre. Voir [la structure Stats](#stats). | `Object<Stats>` |
+
+#### Exemple
+
+GET `/api/species/stats`
+
+```json
+{
+  "kingdom": {
+    "animalia": {
+      "total": 5900,
+      "cites": 138,
+      "image_url": 2438,
+      "common_name_fr": 3889,
+      "common_name_en": 2485,
+      "wikidata_id": 309,
+      "wikipedia_url": 1562
+    },
+    "plantae": {
+      "total": 15329,
+      "cites": 35,
+      "image_url": 10687,
+      "common_name_fr": 15213,
+      "common_name_en": 13903,
+      "wikidata_id": 1501,
+      "wikipedia_url": 14561
+    }
+  },
+  "animalia": {
+    "orchidales": {
+      "total": 10646,
+      "cites": 0,
+      "image_url": 8191,
+      "common_name_fr": 10565,
+      "common_name_en": 9892,
+      "wikidata_id": 1298,
+      "wikipedia_url": 10312
+    },
+    "cyatheales": {
+      "total": 653,
+      "cites": 0,
+      "image_url": 638,
+      "common_name_fr": 653,
+      "common_name_en": 641,
+      "wikidata_id": 44,
+      "wikipedia_url": 648
+    },
+    "liliales": {
+      "total": 519,
+      "cites": 2,
+      "image_url": 285,
+      "common_name_fr": 512,
+      "common_name_en": 486,
+      "wikidata_id": 10,
+      "wikipedia_url": 476
+    },
+    "caryophyllales": {
+      "total": 1913,
+      "cites": 2,
+      "image_url": 720,
+      "common_name_fr": 1907,
+      "common_name_en": 1609,
+      "wikidata_id": 73,
+      "wikipedia_url": 1738
+    },
+    "nepenthales": {
+      "total": 143,
+      "cites": 0,
+      "image_url": 35,
+      "common_name_fr": 142,
+      "common_name_en": 86,
+      "wikidata_id": 18,
+      "wikipedia_url": 103
+    },
+    "euphorbiales": {
+      "total": 709,
+      "cites": 1,
+      "image_url": 353,
+      "common_name_fr": 707,
+      "common_name_en": 686,
+      "wikidata_id": 20,
+      "wikipedia_url": 669
+    },
+    "cycadales": {
+      "total": 343,
+      "cites": 0,
+      "image_url": 187,
+      "common_name_fr": 338,
+      "common_name_en": 172,
+      "wikidata_id": 11,
+      "wikipedia_url": 319
+    },
+    "gentianales": {
+      "total": 37,
+      "cites": 1,
+      "image_url": 15,
+      "common_name_fr": 36,
+      "common_name_en": 33,
+      "wikidata_id": 2,
+      "wikipedia_url": 30
+    },
+    "arecales": {
+      "total": 10,
+      "cites": 0,
+      "image_url": 5,
+      "common_name_fr": 9,
+      "common_name_en": 2,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "primulales": {
+      "total": 27,
+      "cites": 0,
+      "image_url": 8,
+      "common_name_fr": 26,
+      "common_name_en": 23,
+      "wikidata_id": 7,
+      "wikipedia_url": 15
+    },
+    "myrtales": {
+      "total": 74,
+      "cites": 0,
+      "image_url": 69,
+      "common_name_fr": 74,
+      "common_name_en": 71,
+      "wikidata_id": 14,
+      "wikipedia_url": 58
+    },
+    "sapindales": {
+      "total": 19,
+      "cites": 0,
+      "image_url": 7,
+      "common_name_fr": 16,
+      "common_name_en": 10,
+      "wikidata_id": 0,
+      "wikipedia_url": 11
+    },
+    "fabales": {
+      "total": 66,
+      "cites": 0,
+      "image_url": 59,
+      "common_name_fr": 65,
+      "common_name_en": 55,
+      "wikidata_id": 0,
+      "wikipedia_url": 44
+    },
+    "violales": {
+      "total": 10,
+      "cites": 2,
+      "image_url": 7,
+      "common_name_fr": 10,
+      "common_name_en": 9,
+      "wikidata_id": 1,
+      "wikipedia_url": 10
+    },
+    "lycopodiales": {
+      "total": 1,
+      "cites": 1,
+      "image_url": 0,
+      "common_name_fr": 0,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "dicksoniales": {
+      "total": 5,
+      "cites": 0,
+      "image_url": 2,
+      "common_name_fr": 5,
+      "common_name_en": 5,
+      "wikidata_id": 0,
+      "wikipedia_url": 3
+    },
+    "arales": {
+      "total": 9,
+      "cites": 9,
+      "image_url": 4,
+      "common_name_fr": 9,
+      "common_name_en": 7,
+      "wikidata_id": 2,
+      "wikipedia_url": 8
+    },
+    "bromeliales": {
+      "total": 4,
+      "cites": 1,
+      "image_url": 0,
+      "common_name_fr": 4,
+      "common_name_en": 3,
+      "wikidata_id": 0,
+      "wikipedia_url": 4
+    },
+    "ebenales": {
+      "total": 85,
+      "cites": 0,
+      "image_url": 84,
+      "common_name_fr": 85,
+      "common_name_en": 85,
+      "wikidata_id": 0,
+      "wikipedia_url": 85
+    },
+    "pinales": {
+      "total": 14,
+      "cites": 0,
+      "image_url": 2,
+      "common_name_fr": 12,
+      "common_name_en": 3,
+      "wikidata_id": 0,
+      "wikipedia_url": 4
+    },
+    "scrophulariales": {
+      "total": 6,
+      "cites": 2,
+      "image_url": 2,
+      "common_name_fr": 6,
+      "common_name_en": 5,
+      "wikidata_id": 0,
+      "wikipedia_url": 4
+    },
+    "theales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 1,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    },
+    "juglandales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    },
+    "apiales": {
+      "total": 2,
+      "cites": 0,
+      "image_url": 1,
+      "common_name_fr": 2,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    },
+    "asterales": {
+      "total": 8,
+      "cites": 7,
+      "image_url": 6,
+      "common_name_fr": 7,
+      "common_name_en": 7,
+      "wikidata_id": 0,
+      "wikipedia_url": 6
+    },
+    "dioscoreales": {
+      "total": 3,
+      "cites": 3,
+      "image_url": 0,
+      "common_name_fr": 3,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    },
+    "ranunculales": {
+      "total": 3,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 2,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    },
+    "laurales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "lecanorales": {
+      "total": 1,
+      "cites": 1,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "papaverales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 1,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    },
+    "trochodendrales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "rosales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "rhamnales": {
+      "total": 3,
+      "cites": 0,
+      "image_url": 2,
+      "common_name_fr": 3,
+      "common_name_en": 3,
+      "wikidata_id": 0,
+      "wikipedia_url": 3
+    },
+    "solanales": {
+      "total": 1,
+      "cites": 1,
+      "image_url": 0,
+      "common_name_fr": 0,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "zingiberales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 1,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    },
+    "rubiales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 1,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    },
+    "santanales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    },
+    "selaginellales": {
+      "total": 1,
+      "cites": 1,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "ericales": {
+      "total": 1,
+      "cites": 1,
+      "image_url": 0,
+      "common_name_fr": 0,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "dipsacales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "magnoliales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 1,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 1,
+      "wikipedia_url": 1
+    },
+    "fagales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "lamiales": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    }
+  },
+  "plantae": {
+    "anthozoa": {
+      "total": 1822,
+      "cites": 0,
+      "image_url": 1286,
+      "common_name_fr": 1818,
+      "common_name_en": 1414,
+      "wikidata_id": 54,
+      "wikipedia_url": 612
+    },
+    "aves": {
+      "total": 1549,
+      "cites": 79,
+      "image_url": 220,
+      "common_name_fr": 159,
+      "common_name_en": 131,
+      "wikidata_id": 83,
+      "wikipedia_url": 177
+    },
+    "hydrozoa": {
+      "total": 258,
+      "cites": 0,
+      "image_url": 201,
+      "common_name_fr": 258,
+      "common_name_en": 249,
+      "wikidata_id": 4,
+      "wikipedia_url": 255
+    },
+    "mammalia": {
+      "total": 916,
+      "cites": 10,
+      "image_url": 188,
+      "common_name_fr": 463,
+      "common_name_en": 100,
+      "wikidata_id": 50,
+      "wikipedia_url": 221
+    },
+    "reptilia": {
+      "total": 856,
+      "cites": 24,
+      "image_url": 337,
+      "common_name_fr": 742,
+      "common_name_en": 384,
+      "wikidata_id": 78,
+      "wikipedia_url": 111
+    },
+    "actinopteri": {
+      "total": 91,
+      "cites": 1,
+      "image_url": 18,
+      "common_name_fr": 67,
+      "common_name_en": 16,
+      "wikidata_id": 0,
+      "wikipedia_url": 44
+    },
+    "insecta": {
+      "total": 79,
+      "cites": 12,
+      "image_url": 28,
+      "common_name_fr": 74,
+      "common_name_en": 47,
+      "wikidata_id": 5,
+      "wikipedia_url": 41
+    },
+    "amphibia": {
+      "total": 198,
+      "cites": 11,
+      "image_url": 96,
+      "common_name_fr": 193,
+      "common_name_en": 76,
+      "wikidata_id": 4,
+      "wikipedia_url": 6
+    },
+    "hirudinoidea": {
+      "total": 2,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 1
+    },
+    "gastropoda": {
+      "total": 42,
+      "cites": 1,
+      "image_url": 29,
+      "common_name_fr": 42,
+      "common_name_en": 25,
+      "wikidata_id": 15,
+      "wikipedia_url": 41
+    },
+    "bivalvia": {
+      "total": 41,
+      "cites": 0,
+      "image_url": 22,
+      "common_name_fr": 39,
+      "common_name_en": 22,
+      "wikidata_id": 15,
+      "wikipedia_url": 35
+    },
+    "arachnida": {
+      "total": 26,
+      "cites": 0,
+      "image_url": 13,
+      "common_name_fr": 26,
+      "common_name_en": 18,
+      "wikidata_id": 1,
+      "wikipedia_url": 15
+    },
+    "elasmobranchii": {
+      "total": 16,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 4,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 3
+    },
+    "coelacanthi": {
+      "total": 2,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "holothuroidea": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 0,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    },
+    "dipneusti": {
+      "total": 1,
+      "cites": 0,
+      "image_url": 0,
+      "common_name_fr": 1,
+      "common_name_en": 1,
+      "wikidata_id": 0,
+      "wikipedia_url": 0
+    }
+  }
+}
+```
+
+>>>>>>> us-5-data
 ## Recherche espèces
 
 GET `/api/species/search`
