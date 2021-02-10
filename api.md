@@ -184,8 +184,6 @@ GET `/api/species/missing-data?limit=2`
 ]
 ```
 
-<<<<<<< HEAD
-=======
 ## Statistiques sur les données manquantes des espcèes
 
 GET `/api/species/stats`
@@ -762,7 +760,6 @@ GET `/api/species/stats`
 }
 ```
 
->>>>>>> us-5-data
 ## Recherche espèces
 
 GET `/api/species/search`
